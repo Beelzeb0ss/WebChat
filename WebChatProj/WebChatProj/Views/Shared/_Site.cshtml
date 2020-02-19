@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/site.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li>
+                <a id="btn" href="/Home/Index">Home</a>
+            </li>
+            @if (Session["loggedUser"] == null)
+            {
+                <li>
+                    <a href="/Home/Login">Login</a>
+                </li>
+                <li>
+                    <a href="/Home/Register">Register</a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a id="btn" href="/Group/Index">Manage Groups</a>
+                </li>
+                <li>
+                    <a id="btn" href="/Home/Logout">Logout</a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="body">
+        @RenderBody()
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

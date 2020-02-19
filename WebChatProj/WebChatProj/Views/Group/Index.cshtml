@@ -1,0 +1,24 @@
+﻿@using WebChatProj.Entities;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Site.cshtml";
+}
+
+<h2>Groups</h2>
+<a href="/Group/Create">Create group</a>
+@if (ViewData["groups"] != null)
+{
+    foreach (var item in (List<Group>)ViewData["groups"])
+    {
+    <div class="row">
+        <div class="col-1">
+            @item.Name 
+            @if (((User)Session["loggedUser"]).Id == item.OwnerID)
+            {
+                <a href="/Group/Manage?id=@item.Id">Manage</a>
+            }
+        </div>
+    </div>
+    }
+}
+

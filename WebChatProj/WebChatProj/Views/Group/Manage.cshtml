@@ -1,0 +1,43 @@
+﻿@using WebChatProj.Entities;
+@using WebChatProj.Utility;
+@{
+    ViewBag.Title = "Manage";
+    Layout = "~/Views/Shared/_Site.cshtml";
+}
+@{ 
+    var group = (Group)ViewData["group"];
+}
+
+<h2>Manage</h2>
+Group: @group.Name
+<a href="/Group/Delete?id=@group.Id">Delete group</a>
+<h2>Members</h2>
+@if (ViewData["groupMembers"] != null)
+{
+    foreach (var item in (List<User>)ViewData["groupMembers"])
+    {
+        <div class="row">
+            <div class="col-1">
+                @item.Username                 
+                @if (item.Id != group.OwnerID)
+                {<a href="/Group/RemoveMember?memberId=@item.Id&groupId=@group.Id">Kick</a>}
+            </div>
+        </div>
+    }
+}
+<hr />
+<h2>Friends</h2>
+@if (ViewData["friends"] != null)
+{
+    foreach (var item in (List<User>)ViewData["friends"])
+    {
+        if (!ControllerStuff.IsUserInList(item, (List<User>)ViewData["groupMembers"]))
+        {
+        <div class="row">
+            <div class="col-1">
+                @item.Username <a href="/Group/AddMember?memberId=@item.Id&groupId=@group.Id">Add to group</a>
+            </div>
+        </div>
+        }
+    }
+}
