@@ -1,41 +1,39 @@
 ﻿@using WebChatProj.Entities;
 @using WebChatProj.Utility;
+@model WebChatProj.ViewModels.Group.ManageVM
 @{
     ViewBag.Title = "Manage";
     Layout = "~/Views/Shared/_Site.cshtml";
 }
-@{ 
-    var group = (Group)ViewData["group"];
-}
 
 <h2>Manage</h2>
-Group: @group.Name
-<a href="/Group/Delete?id=@group.Id">Delete group</a>
+Group: @Model.Group.Name
+<a href="/Group/Delete?id=@Model.Group.Id">Delete group</a>
 <h2>Members</h2>
-@if (ViewData["groupMembers"] != null)
+@if (Model.GroupMembers != null)
 {
-    foreach (var item in (List<User>)ViewData["groupMembers"])
+    foreach (var item in Model.GroupMembers)
     {
         <div class="row">
             <div class="col-1">
                 @item.Username                 
-                @if (item.Id != group.OwnerID)
-                {<a href="/Group/RemoveMember?memberId=@item.Id&groupId=@group.Id">Kick</a>}
+                @if (item.Id != Model.Group.OwnerID)
+                {<a href="/Group/RemoveMember?memberId=@item.Id&groupId=@Model.Group.Id">Kick</a>}
             </div>
         </div>
     }
 }
 <hr />
 <h2>Friends</h2>
-@if (ViewData["friends"] != null)
+@if (Model.Friends != null)
 {
-    foreach (var item in (List<User>)ViewData["friends"])
+    foreach (var item in Model.Friends)
     {
-        if (!ControllerStuff.IsUserInList(item, (List<User>)ViewData["groupMembers"]))
+        if (!ControllerStuff.IsUserInList(item, Model.GroupMembers))
         {
         <div class="row">
             <div class="col-1">
-                @item.Username <a href="/Group/AddMember?memberId=@item.Id&groupId=@group.Id">Add to group</a>
+                @item.Username <a href="/Group/AddMember?memberId=@item.Id&groupId=@Model.Group.Id">Add to group</a>
             </div>
         </div>
         }

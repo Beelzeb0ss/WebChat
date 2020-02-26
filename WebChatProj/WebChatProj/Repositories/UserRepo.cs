@@ -25,6 +25,7 @@ namespace WebChatProj.Repositories
 
         public void Insert(User item)
         {
+            item.avatarID = 1;
             context.Users.Add(item);
 
             context.SaveChanges();

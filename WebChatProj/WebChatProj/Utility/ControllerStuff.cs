@@ -4,11 +4,21 @@ using System.Linq;
 using System.Web;
 using WebChatProj.Entities;
 using WebChatProj.Repositories;
+using HomeVM = WebChatProj.ViewModels.Home;
 
 namespace WebChatProj.Utility
 {
     public static class ControllerStuff
     {
+
+        public static HomeVM.IndexVM GetIndexVM(User user)
+        {
+            HomeVM.IndexVM indexModel = new HomeVM.IndexVM();
+            indexModel.Groups = ControllerStuff.GetGroupsFromUser(user, new GroupMemberRepo(), new GroupRepo());
+            indexModel.Friends = ControllerStuff.GetFriendsAsUsers(user, new FriendRepo(), new UserRepo());
+            indexModel.Avatars = ControllerStuff.GetFriendsAvatars(indexModel.Friends, new AvatarRepo());
+            return indexModel;
+        }
 
         public static List<User> GetFriendsAsUsers(User current, FriendRepo friendRepo, UserRepo userRepo) {
             List<Friend> friends;

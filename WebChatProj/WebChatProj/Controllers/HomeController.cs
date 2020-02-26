@@ -16,15 +16,14 @@ namespace WebChatProj.Controllers
 
         public ActionResult Index()
         {
+            IndexVM indexModel = new IndexVM();
             if(Session["loggedUser"] != null)
             {
                 User current = (User)Session["loggedUser"];
-                ViewData["groups"] = ControllerStuff.GetGroupsFromUser(current, new GroupMemberRepo(), new GroupRepo());
-                List<User> friends = ControllerStuff.GetFriendsAsUsers(current, new FriendRepo(), new UserRepo());
-                ViewData["friends"] = friends;
-                ViewData["avatars"] = ControllerStuff.GetFriendsAvatars(friends, new AvatarRepo());
+                indexModel = ControllerStuff.GetIndexVM(current);
             }
-            return View();
+            IndexBagVM model = new IndexBagVM() { AddFriendVM = new AddFriendVM(), IndexVM = indexModel};
+            return View(model);
         }
 
         [HttpGet]
@@ -78,7 +77,7 @@ namespace WebChatProj.Controllers
                 User user = repo.GetFirstOrDefault(u => u.Username == model.Username);
 
                 if (user == null)
-                    repo.Insert(new User() { Username = model.Username, Password = model.Password });
+                    repo.Insert(new User() { Username = model.Username, Password = model.Password, avatarID=1 });
                 else
                     ModelState.AddModelError("UniqueUsernameError", "Username Taken");
             }
@@ -99,12 +98,12 @@ namespace WebChatProj.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddFriend(AddFriendVM model)
+        public ActionResult AddFriend(IndexBagVM model)
         {
             if (ModelState.IsValid)
             {
                 UserRepo userRepo = new UserRepo();
-                User friend = userRepo.GetFirstOrDefault(i => i.Username == model.Username);
+                User friend = userRepo.GetFirstOrDefault(i => i.Username == model.AddFriendVM.Username);
                 if(friend == null)
                 {
                     ModelState.AddModelError("NotFound", "User not found");
@@ -118,7 +117,7 @@ namespace WebChatProj.Controllers
 
             if(!ModelState.IsValid)
             {
-                ViewData["friends"] = ControllerStuff.GetFriendsAsUsers(((User)Session["loggedUser"]), new FriendRepo(), new UserRepo());
+                model.IndexVM = ControllerStuff.GetIndexVM((User)Session["loggedUser"]);
                 return View("Index", model);
             }
 

@@ -256,7 +256,11 @@
     <Compile Include="Repositories\WebChatDbContext.cs" />
     <Compile Include="Utility\ControllerStuff.cs" />
     <Compile Include="ViewModels\Group\CreateVM.cs" />
+    <Compile Include="ViewModels\Group\IndexVM.cs" />
+    <Compile Include="ViewModels\Group\ManageVM.cs" />
     <Compile Include="ViewModels\Home\AddFriendVM.cs" />
+    <Compile Include="ViewModels\Home\IndexBagVM.cs" />
+    <Compile Include="ViewModels\Home\IndexVM.cs" />
     <Compile Include="ViewModels\Home\LoginVM.cs" />
     <Compile Include="ViewModels\Home\RegisterVM.cs" />
   </ItemGroup>

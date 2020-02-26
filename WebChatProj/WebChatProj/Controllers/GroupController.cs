@@ -16,8 +16,9 @@ namespace WebChatProj.Controllers
 
         public ActionResult Index()
         {
-            ViewData["groups"] = ControllerStuff.GetGroupsFromUser(((User)Session["loggedUser"]), new GroupMemberRepo(), new GroupRepo());
-            return View();
+            IndexVM model = new IndexVM();
+            model.Groups = ControllerStuff.GetGroupsFromUser(((User)Session["loggedUser"]), new GroupMemberRepo(), new GroupRepo());
+            return View(model);
         }
 
         [HttpGet]
@@ -57,10 +58,11 @@ namespace WebChatProj.Controllers
             GroupRepo groupRepo = new GroupRepo();
             if (((User)Session["loggedUser"]).Id == groupRepo.GetByID(id).OwnerID)
             {
-                ViewData["groupMembers"] = ControllerStuff.GetGroupMembersAsUsers(id, new GroupMemberRepo(), new UserRepo()); 
-                ViewData["group"] = groupRepo.GetByID(id);
-                ViewData["friends"] = ControllerStuff.GetFriendsAsUsers(((User)Session["loggedUser"]), new FriendRepo(), new UserRepo());
-                return View();
+                ManageVM model = new ManageVM();
+                model.GroupMembers = ControllerStuff.GetGroupMembersAsUsers(id, new GroupMemberRepo(), new UserRepo()); 
+                model.Group = groupRepo.GetByID(id);
+                model.Friends = ControllerStuff.GetFriendsAsUsers(((User)Session["loggedUser"]), new FriendRepo(), new UserRepo());
+                return View(model);
             }
             return RedirectToAction("Index", "Group");
         }

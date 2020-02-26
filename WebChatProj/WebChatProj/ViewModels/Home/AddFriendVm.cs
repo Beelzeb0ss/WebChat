@@ -12,5 +12,10 @@ namespace WebChatProj.ViewModels.Home
         [DisplayName("Username: ")]
         [Required(ErrorMessage = "This field is Required!")]
         public string Username { get; set; }
+
+        public AddFriendVM()
+        {
+
+        }
     }
 }
